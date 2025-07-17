@@ -87,9 +87,21 @@ An API is used as the mode of communication between the Presentation and Compute
 
 ### API structure
 The data operaions we need include the following:
+- **GET /auth**: Authorization flow.
 - **GET /recipes**: This gets the list of recipes.
 - **GET /healh**: This is a simple health check endpoint.
 - **DELETE /recipes{recipe_id}**: This deletes a specific recipe with a defined ID.
 - **POST /recipes**: This creates a new recipe record.
+- **PUT /recipes.like/{recipe_id}**: increase recipes' likes.
 
 ![API](images/api.drawio.png)
+
+For frontend, we will use Amazon S3 and Amazon CloudFront to serve our application. 
+
+The data layer will use DynamoDB to store recipe data. Amazon Cognito as an authentication service to restrict recipe management activities to
+authorized users. 
+
+For the API, you will use Amazon API Gateway and associate it with AWS Lambda
+functions to implement the API endpoint functionalities.
+
+![Architecture](images/Architecture.drawio.png)

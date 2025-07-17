@@ -6,9 +6,21 @@ read their recipes. We will implement this by utilising serverless serivces prov
 
 ## Functional Requirements
 Our application should serve two different profiles: admins and end users.
- - Platform admin: The platform owner, who may want to create a new recipe, maintain it, or even delete it.
- - End users/consumers: The end user, who uses the platform for accessing a specific recipe, and should not be able to create, change, or delete any record.
+ - Platform admin: The platform owner, who are responsible for creating a new recipe, maintain it, or even delete it.
+ - End users/consumers: The end user, who uses the platform for accessing recipes and like the preferred ones.
+ - Our user interface should be simple and responsive.
+ - Users should be able to authenticate to use the application.
 
  We will start with two different pages, **/users** for the end users and **/admin** for admins, to support the two differnt personas.
  
   ![Initial Page](images/initial.png)
+
+  Exploring each profile.
+
+  **/user**
+  
+  - Access the list of recipe titles
+  - Ability to choose a specific recipe and access all the details.
+  - Responsive.
+  
+  ![User](images/user%20setup.drawio.png)

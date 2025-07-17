@@ -39,3 +39,16 @@ Our application should serve two different profiles: admins and end users.
 
 
 ![Admin](images/admin%20setup.drawio.png)
+
+## Non-functional requirements
+
+- Global distribution to serve users spread across the globe.
+- Event-driven architecture
+- Cost-effectiveness.
+- Low infrastructure management.
+
+## Technical requirements
+
+- Modern frontend framework - React.js
+- Solely use serverless technologies eg. Lambda.
+- Backend programming language - Python

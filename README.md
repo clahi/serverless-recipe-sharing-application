@@ -52,3 +52,44 @@ Our application should serve two different profiles: admins and end users.
 - Modern frontend framework - React.js
 - Solely use serverless technologies eg. Lambda.
 - Backend programming language - Python
+
+## Data requirements
+
+Operations to implement are the following:
+
+- **List the recipes**: Present a list of the recipes created.
+- **Delete a recipe**: If an admin no longer wants a speccific recipe to be part of the portfolio, it should be possible to delete the item.
+- **Create a recipe**: Create a new recipe to share with the users.
+- **Like a recipe**: record the number of likes in a specific recipe.
+
+We will use the following document to store our data
+
+recipe_example.json:
+<pre>
+{
+    "ID": "GUID",
+    "Title": "recipe title",
+    "Ingredients": [...],
+    "Steps": [...],
+    "Likes": X
+}
+</pre>
+
+## Architecture
+
+Our architecture will follow a three well-defined layers.
+
+- **Presentation Layer**: Hosting and serving the frontend.
+- **Compute Layer**: Executing business logic
+- **Data Layer**: Storing and retrieving data.
+
+An API is used as the mode of communication between the Presentation and Compute Layers. The API is responsibe for exposing the endpoints to perform all the actions to execute and abstract the business logic. 
+
+### API structure
+The data operaions we need include the following:
+- **GET /recipes**: This gets the list of recipes.
+- **GET /healh**: This is a simple health check endpoint.
+- **DELETE /recipes{recipe_id}**: This deletes a specific recipe with a defined ID.
+- **POST /recipes**: This creates a new recipe record.
+
+![API](images/api.drawio.png)

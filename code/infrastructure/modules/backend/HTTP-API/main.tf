@@ -27,3 +27,19 @@ resource "aws_apigatewayv2_authorizer" "authorizer" {
     issuer = var.cognito_pool_user_endpoint
   }
 }
+
+resource "aws_apigatewayv2_route" "auth_route" {
+  api_id = aws_apigatewayv2_api.http_api.id
+
+  route_key = "GET /auth"
+
+}
+
+resource "aws_apigatewayv2_integration" "auth_api_lambda_integration" {
+  api_id = aws_apigatewayv2_api.http_api.id
+  integration_type = "AWS_PROXY"
+
+  integration_uri = var.lambda_auth_invoke_arn
+  payload_format_version = "2.0"
+  
+}

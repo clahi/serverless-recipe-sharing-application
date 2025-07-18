@@ -36,3 +36,20 @@ resource "aws_cognito_user_pool" "user_pool" {
     attribute_data_type = string
   }
 }
+
+resource "aws_cognito_user_pool_client" "user_pool_client" {
+  name = "client"
+  user_pool_id = aws_cognito_user_pool.user_pool.id
+}
+
+resource "aws_cognito_user" "user" {
+  user_pool_id = aws_cognito_user_pool.user_pool.id
+  username = var.username
+
+  attributes = {
+    Name = "email"
+    value = var.email
+  }
+
+  desired_delivery_mediums = ["EMAIL"]
+}

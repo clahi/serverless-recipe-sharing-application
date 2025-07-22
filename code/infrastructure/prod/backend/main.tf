@@ -26,11 +26,11 @@ module "congnito" {
 # }
 
 module "http_api" {
-  source             = "../../modules/backend/HTTP-API"
-  stage_name         = "prod"
-  pool_client        = module.congnito.user_poo_client_id
+  source                     = "../../modules/backend/HTTP-API"
+  stage_name                 = "prod"
+  pool_client                = module.congnito.user_poo_client_id
   cognito_issuer_url = module.congnito.cognito_issuer_url
-  environemnt        = "prod"
+  environemnt = "prod"
 }
 
 module "dynamoDB" {

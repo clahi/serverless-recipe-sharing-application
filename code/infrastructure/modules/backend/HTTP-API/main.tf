@@ -72,18 +72,18 @@ resource "aws_cloudwatch_log_group" "api_gw_logs" {
   retention_in_days = 7
 }
 
-# resource "aws_apigatewayv2_authorizer" "authorizer" {
-#   api_id                            = aws_apigatewayv2_api.http_api.id
-#   name                              = "CognitoAuthorizer"
-#   authorizer_type                   = "JWT"
-#   identity_sources                  = ["$request.header.Authorization"]
-#   # authorizer_payload_format_version = "2.0"
+resource "aws_apigatewayv2_authorizer" "authorizer" {
+  api_id                            = aws_apigatewayv2_api.http_api.id
+  name                              = "CognitoAuthorizer"
+  authorizer_type                   = "JWT"
+  identity_sources                  = ["$request.header.Authorization"]
+  # authorizer_payload_format_version = "2.0"
 
-#   jwt_configuration {
-#     audience = [var.pool_client]
-#     issuer = var.cognito_issuer_url
-#   }
-# }
+  jwt_configuration {
+    audience = [var.pool_client]
+    issuer = var.cognito_issuer_url
+  }
+}
 
 resource "aws_apigatewayv2_route" "auth_route" {
   api_id = aws_apigatewayv2_api.http_api.id
@@ -126,18 +126,18 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-data "archive_file" "function_file" {
+data "archive_file" "auth_function_file" {
   type = "zip"
-  source_file = "${path.module}/lambda/index.py"
-  output_path = "${path.module}/lambda/function.zip"
+  source_file = "${path.module}/lambda/auth/auth.py"
+  output_path = "${path.module}/lambda/auth/function.zip"
 }
 
 resource "aws_lambda_function" "testauth" {
-  filename = data.archive_file.function_file.output_path
+  filename = data.archive_file.auth_function_file.output_path
   function_name = "testauth"
   role = aws_iam_role.lambda_role.arn
-  handler = "index.lambda_handler"
-  # source_code_hash = data.archive_file.function_file.output_base64sha256
+  handler = "auth.lambda_handler"
+  # source_code_hash = data.archive_file.auth_function_file.output_base64sha256
   runtime = "python3.9"
   timeout = 60
   tags = {
@@ -195,9 +195,6 @@ resource "aws_lambda_permission" "lambda_permission_health" {
     aws_apigatewayv2_stage.http_api_stage
   ]
 }
-
-
-
 
 resource "aws_apigatewayv2_route" "health_route" {
   api_id = aws_apigatewayv2_api.http_api.id

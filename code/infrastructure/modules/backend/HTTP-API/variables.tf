@@ -17,6 +17,7 @@ variable "cognito_issuer_url" {
   type = string
 }
 
-variable "lambda_auth_invoke_arn" {
-  description = "The invoke arn from the auth lambda function"
+variable "environemnt" {
+  description = "The environment to deploy to."
+  type = string
 }

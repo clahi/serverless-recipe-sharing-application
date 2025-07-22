@@ -14,8 +14,14 @@ resource "aws_iam_role" "lambda_auth_role" {
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
+data "archive_file" "function_file" {
+  type = "zip"
+  source_file = "${path.module}/lambda/index.py"
+  output_path = "${path.module}/lambda/function.zip"
+}
+
 resource "aws_lambda_function" "testauth" {
-  filename = var.lambda_auth_tester_source_file_path
+  filename = data.archive_file.function_file.output_path
   function_name = "testauth"
   role = aws_iam_role.lambda_auth_role.arn
   handler = "index.handler"

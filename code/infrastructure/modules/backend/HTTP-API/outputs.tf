@@ -3,6 +3,11 @@ output "execution_arn" {
   description = "The source arn for the api."
 }
 
+output "invoke_arn" {
+  value = aws_lambda_function.testauth.invoke_arn
+  description = "The invocation arn for the lambda function."
+}
+
 output "http_enpoint" {
   value = aws_apigatewayv2_api.http_api.api_endpoint
   description = "URI of the API"

@@ -25,7 +25,7 @@ resource "aws_lambda_function" "testauth" {
   function_name = "testauth"
   role = aws_iam_role.lambda_auth_role.arn
   handler = "index.handler"
-  source_code_hash = var.lambda_auth_tester_source_code_hash
+  source_code_hash = data.archive_file.function_file.output_base64sha256
   runtime = "python3.9"
 
   tags = {

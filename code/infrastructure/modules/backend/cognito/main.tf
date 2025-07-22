@@ -20,6 +20,7 @@ resource "aws_cognito_user_pool" "user_pool" {
   admin_create_user_config {
     allow_admin_create_user_only = true
     invite_message_template {
+      sms_message = "Hello {username}, your code is: {####}"
       email_message = "Hello {username} from Recipe Sharring Serverless Application.\nYour temporary password is {####}"
       email_subject = "Serverless recipe sharing app."
     }
@@ -33,7 +34,14 @@ resource "aws_cognito_user_pool" "user_pool" {
     name = "email"
     required = true
     mutable = true
-    attribute_data_type = string
+    attribute_data_type = "String"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      schema,
+      password_policy[0].temporary_password_validity_days
+    ]
   }
 }
 
@@ -47,8 +55,8 @@ resource "aws_cognito_user" "user" {
   username = var.username
 
   attributes = {
-    Name = "email"
-    value = var.email
+    # name = "email"
+    email = var.email
   }
 
   desired_delivery_mediums = ["EMAIL"]

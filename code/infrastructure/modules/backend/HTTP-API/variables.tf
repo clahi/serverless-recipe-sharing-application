@@ -7,8 +7,13 @@ variable "pool_client" {
   description = "The cognito pool client audience"
 }
 
-variable "cognito_pool_user_endpoint" {
-  description = "The cognito user pool endpoint to be used by httpi authorizer."
+# variable "cognito_pool_user_endpoint" {
+#   description = "The cognito user pool endpoint to be used by httpi authorizer."
+#   type = string
+# }
+
+variable "cognito_issuer_url" {
+  description = "The cognito issuer url to be used by httpi authorizer."
   type = string
 }
 

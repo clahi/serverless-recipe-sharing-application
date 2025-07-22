@@ -11,7 +11,7 @@ variable "environemnt" {
   type = string
 }
 
-variable "api_arn" {
+variable "api_execution_arn" {
   description = "The api gateway arn which will invoke the lambda function"
   
 }

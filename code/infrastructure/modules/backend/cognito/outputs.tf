@@ -3,9 +3,16 @@ output "cognito_arn" {
   description = "The arn of the user pool."
 }
 
-output "cognito_endpoint" {
-  value = aws_cognito_user_pool.user_pool.endpoint
-  description = "The endpoint name of the user pool."
+# output "cognito_endpoint" {
+#   value = aws_cognito_user_pool.user_pool.endpoint
+#   description = "The endpoint name of the user pool."
+# }
+
+
+
+output "cognito_issuer_url" {
+  value = "https://cognito-idp.${var.region}.amazonaws.com/${aws_cognito_user_pool.user_pool.id}"
+  description = "The issuer URL for JWT authorizer"
 }
 
 output "cognito_Id" {

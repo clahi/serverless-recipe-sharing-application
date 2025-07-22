@@ -33,6 +33,8 @@ resource "aws_apigatewayv2_route" "auth_route" {
 
   route_key = "GET /auth"
 
+  target = "integrations/${aws_apigatewayv2_integration.auth_api_lambda_integration.id}"
+
 }
 
 resource "aws_apigatewayv2_integration" "auth_api_lambda_integration" {

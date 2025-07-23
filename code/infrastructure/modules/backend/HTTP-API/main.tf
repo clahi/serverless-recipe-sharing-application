@@ -176,15 +176,12 @@ resource "aws_apigatewayv2_integration" "recipes_api_lambda_integration" {
   
 }
 
-resource "aws_lambda_permission" "lambda_permission_health" {
+resource "aws_lambda_permission" "lambda_permission_recipes" {
   statement_id = "AllowExecutionFromHttpApi"
   action = "lambda:InvokeFunction"
-  function_name = var.health_function_name
+  function_name = var.recipes_function_name
   principal = "apigateway.amazonaws.com"
   source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 
-  depends_on = [
-    aws_apigatewayv2_route.health_route,
-    aws_apigatewayv2_stage.http_api_stage
-  ]
+  
 }

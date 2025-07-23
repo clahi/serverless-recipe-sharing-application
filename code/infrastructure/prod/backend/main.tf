@@ -33,10 +33,10 @@ module "http_api" {
   auth_function_name              = module.auth_lambda.function_name
   auth_lambda_auth_invocation_arn = module.auth_lambda.lambda_auth_invoke_arn
 
-  health_function_name              = module.health_lambda.function_name
+  health_function_name         = module.health_lambda.function_name
   health_lambda_invocation_arn = module.health_lambda.lambda_health_invoke_arn
 
-  recipes_function_name = module.recipes_lambda.function_name
+  recipes_function_name          = module.recipes_lambda.function_name
   recipes_lambda__invocation_arn = module.recipes_lambda.lambda_recipes_invoke_arn
 
 }
@@ -49,11 +49,11 @@ module "auth_lambda" {
 module "health_lambda" {
   source      = "../../modules/backend/lambda-functions/health"
   environemnt = "prod"
-  
+
 }
 
 module "recipes_lambda" {
-  source = "../../modules/backend/lambda-functions/recipes"
+  source      = "../../modules/backend/lambda-functions/recipes"
   environemnt = "prod"
 
   dynamodb_table_arn = module.dynamoDB.dynamo_arn

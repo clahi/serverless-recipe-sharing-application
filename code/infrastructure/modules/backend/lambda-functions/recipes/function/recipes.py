@@ -2,7 +2,7 @@ import json
 import boto3
 from typing import List, Dict
 from decimal import Decimal
-from boto3.dynamodb.conditions import key
+from boto3.dynamodb.conditions import Key
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('recipes')

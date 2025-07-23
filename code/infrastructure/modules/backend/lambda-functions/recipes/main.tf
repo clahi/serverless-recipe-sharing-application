@@ -11,7 +11,7 @@ data "aws_iam_policy_document" "lambda_excution_read_role" {
 
 resource "aws_iam_role" "lambda_excution_read_role" {
   name = "lambda_excution_read_role"
-  assume_role_policy = data.aws_iam_policy_document.health_function_assume_role.json
+  assume_role_policy = data.aws_iam_policy_document.lambda_excution_read_role.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
@@ -33,7 +33,7 @@ resource "aws_iam_policy" "dynamodb_real_policy" {
           "dynamodb:Query"
         ],
         Effect = "Allow",
-        resource = var.dynamodb_table_arn
+        Resource = var.dynamodb_table_arn
       }
     ]
   })

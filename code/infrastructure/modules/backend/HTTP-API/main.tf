@@ -110,17 +110,13 @@ resource "aws_lambda_permission" "lambda_permission_auth" {
   action = "lambda:InvokeFunction"
   function_name = var.auth_function_name
   principal = "apigateway.amazonaws.com"
-  source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/auth"
+  source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 
   depends_on = [
     aws_apigatewayv2_route.auth_route,
     aws_apigatewayv2_stage.http_api_stage
   ]
 }
-
-
-
-
 
 # Route /health
 
@@ -149,7 +145,7 @@ resource "aws_lambda_permission" "lambda_permission_health" {
   action = "lambda:InvokeFunction"
   function_name = var.health_function_name
   principal = "apigateway.amazonaws.com"
-  source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/health"
+  source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 
   depends_on = [
     aws_apigatewayv2_route.health_route,

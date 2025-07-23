@@ -11,7 +11,3 @@ output "api_gateway_integration_uri" {
 output "execution_arn" {
   value = module.http_api.execution_arn
 }
-
-output "invoke_arn" {
-  value = module.http_api.invoke_arn
-}

@@ -19,9 +19,9 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 }
 
-resource "aws_iam_policy" "dynamodb_real_policy" {
+resource "aws_iam_policy" "dynamodb_read_policy" {
   name = "LambdaDynamoDBReadAccess"
-  description = "Allows rea access to DynamoDB table."
+  description = "Allows read access to DynamoDB table."
 
   policy = jsonencode({
     Version = "2012-10-17",
@@ -41,7 +41,7 @@ resource "aws_iam_policy" "dynamodb_real_policy" {
 
 resource "aws_iam_role_policy_attachment" "dynamodb_read" {
   role = aws_iam_role.lambda_excution_read_role.name
-  policy_arn = aws_iam_policy.dynamodb_real_policy.arn
+  policy_arn = aws_iam_policy.dynamodb_read_policy.arn
 }
 
 data "archive_file" "function_file" {

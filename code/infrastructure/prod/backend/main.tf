@@ -30,15 +30,21 @@ module "http_api" {
   cognito_issuer_url = module.congnito.cognito_issuer_url
   environemnt        = "prod"
 
+  # Auth lambda function
   auth_function_name              = module.auth_lambda.function_name
   auth_lambda_auth_invocation_arn = module.auth_lambda.lambda_auth_invoke_arn
 
+  # Health checking lambda
   health_function_name         = module.health_lambda.function_name
   health_lambda_invocation_arn = module.health_lambda.lambda_health_invoke_arn
 
+  # Get recipes lambda function
   recipes_function_name          = module.recipes_lambda.function_name
   recipes_lambda__invocation_arn = module.recipes_lambda.lambda_recipes_invoke_arn
 
+  # Post recipes lambda function
+  post_recipe_function_name = module.post_recipes_lambda.post_lambda_function_name
+  post_recipes_lambda__invocation_arn = module.post_recipes_lambda.lambda_post_recipes_invoke_arn
 }
 
 module "auth_lambda" {
@@ -52,9 +58,15 @@ module "health_lambda" {
 
 }
 
-module "recipes_lambda" {
-  source      = "../../modules/backend/lambda-functions/recipes"
+module "get_recipes_lambda" {
+  source      = "../../modules/backend/lambda-functions/get-recipes"
   environemnt = "prod"
 
+  dynamodb_table_arn = module.dynamoDB.dynamo_arn
+}
+
+module "post_recipes_lambda" {
+  source = "../../modules/backend/lambda-functions/post-recipes"
+  environemnt = "prod"
   dynamodb_table_arn = module.dynamoDB.dynamo_arn
 }

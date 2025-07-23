@@ -52,3 +52,12 @@ variable "recipes_lambda__invocation_arn" {
   type = string
 }
 
+variable "post_recipe_function_name" {
+  description = "The recipes lambda function name"
+  type = string
+}
+
+variable "post_recipes_lambda__invocation_arn" {
+  description = "The recipes lambda invocation arn"
+  type = string
+}

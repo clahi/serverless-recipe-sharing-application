@@ -33,11 +33,22 @@ variable "auth_lambda_auth_invocation_arn" {
 }
 
 variable "health_function_name" {
-  description = "The authentication lambda function name"
+  description = "The health lambda function name"
   type = string
 }
 
-variable "health_lambda_auth_invocation_arn" {
-  description = "The authentication lambda invocation arn"
+variable "health_lambda_invocation_arn" {
+  description = "The health lambda invocation arn"
   type = string
 }
+
+variable "recipes_function_name" {
+  description = "The recipes lambda function name"
+  type = string
+}
+
+variable "recipes_lambda__invocation_arn" {
+  description = "The recipes lambda invocation arn"
+  type = string
+}
+

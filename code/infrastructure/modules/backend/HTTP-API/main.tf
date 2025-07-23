@@ -134,7 +134,43 @@ resource "aws_apigatewayv2_integration" "health_api_lambda_integration" {
   api_id = aws_apigatewayv2_api.http_api.id
   integration_type = "AWS_PROXY"
 
-  integration_uri = var.health_lambda_auth_invocation_arn
+  integration_uri = var.health_lambda_invocation_arn
+  payload_format_version = "2.0"
+
+  
+}
+
+resource "aws_lambda_permission" "lambda_permission_health" {
+  statement_id = "AllowExecutionFromHttpApi"
+  action = "lambda:InvokeFunction"
+  function_name = var.health_function_name
+  principal = "apigateway.amazonaws.com"
+  source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
+
+  depends_on = [
+    aws_apigatewayv2_route.health_route,
+    aws_apigatewayv2_stage.http_api_stage
+  ]
+}
+
+
+# Route /recipes
+
+resource "aws_apigatewayv2_route" "recipes_route" {
+  api_id = aws_apigatewayv2_api.http_api.id
+
+  route_key = "ANY /recipes"
+
+  target = "integrations/${aws_apigatewayv2_integration.recipes_api_lambda_integration.id}"
+
+   depends_on = [aws_apigatewayv2_integration.recipes_api_lambda_integration]
+}
+
+resource "aws_apigatewayv2_integration" "recipes_api_lambda_integration" {
+  api_id = aws_apigatewayv2_api.http_api.id
+  integration_type = "AWS_PROXY"
+
+  integration_uri = var.recipes_lambda__invocation_arn
   payload_format_version = "2.0"
 
   

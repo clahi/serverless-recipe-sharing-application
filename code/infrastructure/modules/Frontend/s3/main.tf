@@ -28,7 +28,7 @@ resource "aws_s3_bucket_policy" "allow_access_from_cloudfront" {
         {
             "Sid": "AllowCloudFrontServicePricipal",
             "Effect": "Allow",
-            "Pricipal": {
+            "Principal": {
                 "Service": "cloudfront.amazonaws.com"
             },
             "Action": [

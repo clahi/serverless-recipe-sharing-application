@@ -11,3 +11,11 @@ output "api_gateway_integration_uri" {
 output "execution_arn" {
   value = module.http_api.execution_arn
 }
+
+output "cognito_user_pools_Id" {
+  value = module.congnito.cognito_user_pools_id
+}
+
+output "user_pool_client_id" {
+  value = module.congnito.user_pool_client_id
+}

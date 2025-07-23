@@ -83,7 +83,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   restrictions {
     geo_restriction {
       restriction_type = "blacklist"
-      locations = []
+      locations = ["US"]
     }
   }
 
@@ -97,6 +97,6 @@ resource "aws_cloudfront_origin_access_control" "s3_access" {
   description = "cloudfront access conrol"
   origin_access_control_origin_type = "s3"
   signing_behavior = "always"
-  signing_protocol = "signv4"
+  signing_protocol = "sigv4"
 }
 

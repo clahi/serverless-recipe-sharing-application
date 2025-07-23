@@ -8,4 +8,4 @@ export const appConfig = {
   iconFileName: "ch4_link.png",
 };
 
-export const API_URL = "YOUR_API_URL";
+export const API_URL = "https://1g1ke12wo6.execute-api.us-east-1.amazonaws.com/prod";

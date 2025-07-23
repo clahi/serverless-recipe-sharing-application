@@ -15,12 +15,12 @@ output "cognito_issuer_url" {
   description = "The issuer URL for JWT authorizer"
 }
 
-output "cognito_Id" {
+output "cognito_user_pools_id" {
   value = aws_cognito_user_pool.user_pool.id
   description = "The ID of the user pool."
 }
 
-output "user_poo_client_id" {
+output "user_pool_client_id" {
   value = aws_cognito_user_pool_client.user_pool_client.id
   description = "The id of the user pool cient."
 }

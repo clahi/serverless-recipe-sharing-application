@@ -212,9 +212,9 @@ resource "aws_lambda_permission" "post_lambda_permission" {
   source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 }
 
-# Route Delete /recipes/id
+# Route Delete /recipes/{recipe_id}
 
-resource "aws_apigatewayv2_route" "delete_recipes_route" {
+resource "aws_apigatewayv2_route" "delete_recipe_route" {
   api_id = aws_apigatewayv2_api.http_api.id
 
   route_key = "DELETE /recipes/{recipe_id}"
@@ -231,10 +231,37 @@ resource "aws_apigatewayv2_integration" "delete_route_integration" {
   payload_format_version = "2.0"
 }
 
-resource "aws_lambda_permission" "post_lambda_permission" {
+resource "aws_lambda_permission" "delete_lambda_permission" {
   statement_id = "AllowExecutionFromHttpApi"
   action = "lambda:InvokeFunction"
   function_name = var.delete_recipe_function_name
+  principal = "apigateway.amazonaws.com"
+  source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
+}
+
+# Route Like /recipes/like/{recipe_id}
+
+resource "aws_apigatewayv2_route" "like_recipe_route" {
+  api_id = aws_apigatewayv2_api.http_api.id
+
+  route_key = "PUT /recipes/like/{recipe_id}"
+
+  target = "integrations/${aws_apigatewayv2_integration.delete_route_integration.id}"
+
+}
+
+resource "aws_apigatewayv2_integration" "like_route_integration" {
+  api_id = aws_apigatewayv2_api.http_api.id
+  integration_type = "AWS_PROXY"
+
+  integration_uri = var.like_recipes_lambda__invocation_arn
+  payload_format_version = "2.0"
+}
+
+resource "aws_lambda_permission" "like_lambda_permission" {
+  statement_id = "AllowExecutionFromHttpApi"
+  action = "lambda:InvokeFunction"
+  function_name = var.like_recipe_function_name
   principal = "apigateway.amazonaws.com"
   source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*"
 }

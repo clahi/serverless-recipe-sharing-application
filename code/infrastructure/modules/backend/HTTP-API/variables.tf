@@ -73,3 +73,15 @@ variable "delete_recipes_lambda__invocation_arn" {
   description = "The delete recipe lambda function invok arn"
   type = string
 }
+
+# Liking function
+variable "like_recipe_function_name" {
+  description = "The delete recipe function name"
+  type = string
+}
+
+variable "like_recipes_lambda__invocation_arn" {
+  description = "The delete recipe lambda function invok arn"
+  type = string
+}
+

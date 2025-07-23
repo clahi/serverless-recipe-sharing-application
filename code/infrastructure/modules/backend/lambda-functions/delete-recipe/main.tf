@@ -14,7 +14,7 @@ resource "aws_iam_role" "delete_recipes_lambda_role" {
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_docuemnt.json
 }
 
-resource "aws_iam_role_policy_attachment" "post_recipes_role_attachemnt" {
+resource "aws_iam_role_policy_attachment" "delete_recipes_role_attachemnt" {
   role = aws_iam_role.delete_recipes_lambda_role.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 
@@ -54,6 +54,7 @@ resource "aws_lambda_function" "delete_lambda_function" {
   handler = "delete.lambda_handler"
   source_code_hash = data.archive_file.function_file.output_base64sha256
   runtime = "3.9"
+  timeout = 60
 
   # layers = [ "arn:aws:lambda:${var.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:68" ]
 

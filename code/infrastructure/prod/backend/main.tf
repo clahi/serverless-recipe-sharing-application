@@ -49,6 +49,10 @@ module "http_api" {
   # Lambda function for deleting recipe
   delete_recipe_function_name = module.delete_recipe_lambda.delete_lambda_function_name
   delete_recipes_lambda__invocation_arn = module.delete_recipe_lambda.delete_lambda_recipes_invoke_arn
+
+  # Lambda function for liking a recipe
+  like_recipe_function_name = module.like_recipe_lambda.like_lambda_function_name
+  like_recipes_lambda__invocation_arn = module.like_recipe_lambda.like_lambda_recipe_invoke_arn
 }
 
 # A lambda function to authenticate 
@@ -82,6 +86,13 @@ module "post_recipes_lambda" {
 # A lambda function to delete a recipe
 module "delete_recipe_lambda" {
   source = "../../modules/backend/lambda-functions/delete-recipe"
+  environemnt = "prod"
+  dynamodb_table_arn = module.dynamoDB.dynamo_arn
+}
+
+# A lambda function to like a recipe
+module "like_recipe_lambda" {
+  source = "../../modules/backend/lambda-functions/like-recipe"
   environemnt = "prod"
   dynamodb_table_arn = module.dynamoDB.dynamo_arn
 }

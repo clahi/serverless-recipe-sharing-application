@@ -18,12 +18,10 @@ module "congnito" {
   email    = "clahimoha1000@gmail.com"
 }
 
-# module "auth_lambda" {
-#   source      = "../../modules/backend/lambda/auth"
-#   environemnt = "prod"
-# #   api_arn     = module.http_api.httpi_arn
-#   api_execution_arn = module.http_api.execution_arn
-# }
+module "dynamoDB" {
+  source = "../../modules/backend/data-store/dynamoDB"
+
+}
 
 module "http_api" {
   source                     = "../../modules/backend/HTTP-API"
@@ -31,9 +29,20 @@ module "http_api" {
   pool_client                = module.congnito.user_poo_client_id
   cognito_issuer_url = module.congnito.cognito_issuer_url
   environemnt = "prod"
+
+  auth_function_name = module.auth_lambda.function_name
+  auth_lambda_auth_invocation_arn = module.auth_lambda.lambda_auth_invoke_arn
+
+  health_function_name = module.health_lambda.function_name
+  health_lambda_auth_invocation_arn = module.health_lambda.lambda_health_invoke_arn
 }
 
-module "dynamoDB" {
-  source = "../../modules/backend/data-store/dynamoDB"
+module "auth_lambda" {
+  source      = "../../modules/backend/lambda-functions/auth"
+  environemnt = "prod"
+}
 
+module "health_lambda" {
+  source = "../../modules/backend/lambda-functions/health"
+  environemnt = "prod"
 }

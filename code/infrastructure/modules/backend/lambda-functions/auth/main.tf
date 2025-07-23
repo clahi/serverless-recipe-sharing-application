@@ -21,15 +21,15 @@ resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
 
 data "archive_file" "function_file" {
   type = "zip"
-  source_file = "${path.module}/lambda/index.py"
-  output_path = "${path.module}/lambda/function.zip"
+  source_file = "${path.module}/function/auth.py"
+  output_path = "${path.module}/function/auth.zip"
 }
 
 resource "aws_lambda_function" "testauth" {
   filename = data.archive_file.function_file.output_path
   function_name = "testauth"
   role = aws_iam_role.lambda_auth_role.arn
-  handler = "index.lambda_handler"
+  handler = "auth.lambda_handler"
   source_code_hash = data.archive_file.function_file.output_base64sha256
   runtime = "python3.9"
 
@@ -38,10 +38,10 @@ resource "aws_lambda_function" "testauth" {
   }
 }
 
-resource "aws_lambda_permission" "lambda_permission_auth" {
-  statement_id = "AllowExecutionFromHttpApi"
-  action = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.testauth.function_name
-  principal = "apigateway.amazonaws.com"
-  source_arn = "${var.api_execution_arn}/*/*"
-}
+# resource "aws_lambda_permission" "lambda_permission_auth" {
+#   statement_id = "AllowExecutionFromHttpApi"
+#   action = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.testauth.function_name
+#   principal = "apigateway.amazonaws.com"
+#   source_arn = "${var.api_execution_arn}/*/*"
+# }

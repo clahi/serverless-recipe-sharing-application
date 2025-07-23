@@ -98,57 +98,17 @@ resource "aws_apigatewayv2_route" "auth_route" {
 resource "aws_apigatewayv2_integration" "auth_api_lambda_integration" {
   api_id = aws_apigatewayv2_api.http_api.id
   integration_type = "AWS_PROXY"
-  integration_uri = aws_lambda_function.testauth.invoke_arn
+  integration_uri = var.auth_lambda_auth_invocation_arn
   payload_format_version = "2.0"
 
   # depends_on = [ aws_apigatewayv2_api.http_api, aws_lambda_function.testauth ]
   
 }
 
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-    principals {
-      type = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-    actions = [ "sts:AssumeRole" ]
-  }
-}
-
-resource "aws_iam_role" "lambda_role" {
-  name = "lambda_execution_role"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_basic_execution" {
-  role = aws_iam_role.lambda_role.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-}
-
-data "archive_file" "auth_function_file" {
-  type = "zip"
-  source_file = "${path.module}/lambda/auth/auth.py"
-  output_path = "${path.module}/lambda/auth/function.zip"
-}
-
-resource "aws_lambda_function" "testauth" {
-  filename = data.archive_file.auth_function_file.output_path
-  function_name = "testauth"
-  role = aws_iam_role.lambda_role.arn
-  handler = "auth.lambda_handler"
-  # source_code_hash = data.archive_file.auth_function_file.output_base64sha256
-  runtime = "python3.9"
-  timeout = 60
-  tags = {
-    environemnt = var.environemnt
-  }
-}
-
 resource "aws_lambda_permission" "lambda_permission_auth" {
   statement_id = "AllowExecutionFromRestApi"
   action = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.testauth.function_name
+  function_name = var.auth_function_name
   principal = "apigateway.amazonaws.com"
   source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/auth"
 
@@ -164,38 +124,6 @@ resource "aws_lambda_permission" "lambda_permission_auth" {
 
 # Route /health
 
-data "archive_file" "heath_function_file" {
-  type = "zip"
-  source_file = "${path.module}/lambda/health/health.py"
-  output_path = "${path.module}/lambda/health/function.zip"
-}
-
-resource "aws_lambda_function" "health_check" {
-  filename = data.archive_file.heath_function_file.output_path
-  function_name = "health-check"
-  role = aws_iam_role.lambda_role.arn
-  handler = "health.lambda_handler"
-  source_code_hash = data.archive_file.heath_function_file.output_base64sha256
-  runtime = "python3.9"
-  timeout = 60
-  tags = {
-    environemnt = var.environemnt
-  }
-}
-
-resource "aws_lambda_permission" "lambda_permission_health" {
-  statement_id = "AllowExecutionFromHttpApi"
-  action = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.health_check.function_name
-  principal = "apigateway.amazonaws.com"
-  source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/health"
-
-  depends_on = [
-    aws_apigatewayv2_route.health_route,
-    aws_apigatewayv2_stage.http_api_stage
-  ]
-}
-
 resource "aws_apigatewayv2_route" "health_route" {
   api_id = aws_apigatewayv2_api.http_api.id
 
@@ -210,9 +138,21 @@ resource "aws_apigatewayv2_integration" "health_api_lambda_integration" {
   api_id = aws_apigatewayv2_api.http_api.id
   integration_type = "AWS_PROXY"
 
-  integration_uri = aws_lambda_function.health_check.invoke_arn
+  integration_uri = var.health_lambda_auth_invocation_arn
   payload_format_version = "2.0"
 
-  depends_on = [ aws_apigatewayv2_api.http_api, aws_lambda_function.testauth ]
   
+}
+
+resource "aws_lambda_permission" "lambda_permission_health" {
+  statement_id = "AllowExecutionFromHttpApi"
+  action = "lambda:InvokeFunction"
+  function_name = var.health_function_name
+  principal = "apigateway.amazonaws.com"
+  source_arn = "${aws_apigatewayv2_api.http_api.execution_arn}/*/*/health"
+
+  depends_on = [
+    aws_apigatewayv2_route.health_route,
+    aws_apigatewayv2_stage.http_api_stage
+  ]
 }

@@ -52,12 +52,24 @@ variable "recipes_lambda__invocation_arn" {
   type = string
 }
 
+# Post function
 variable "post_recipe_function_name" {
-  description = "The recipes lambda function name"
+  description = "The post recipes lambda function name"
   type = string
 }
 
 variable "post_recipes_lambda__invocation_arn" {
-  description = "The recipes lambda invocation arn"
+  description = "The post recipes lambda invocation arn"
+  type = string
+}
+
+# Delete function
+variable "delete_recipe_function_name" {
+  description = "The delete recipe function name"
+  type = string
+}
+
+variable "delete_recipes_lambda__invocation_arn" {
+  description = "The delete recipe lambda function invok arn"
   type = string
 }

@@ -45,19 +45,26 @@ module "http_api" {
   # Post recipes lambda function
   post_recipe_function_name = module.post_recipes_lambda.post_lambda_function_name
   post_recipes_lambda__invocation_arn = module.post_recipes_lambda.lambda_post_recipes_invoke_arn
+
+  # Lambda function for deleting recipe
+  delete_recipe_function_name = module.delete_recipe_lambda.delete_lambda_function_name
+  delete_recipes_lambda__invocation_arn = module.delete_recipe_lambda.delete_lambda_recipes_invoke_arn
 }
 
+# A lambda function to authenticate 
 module "auth_lambda" {
   source      = "../../modules/backend/lambda-functions/auth"
   environemnt = "prod"
 }
 
+# A lambda function to check the health of our api
 module "health_lambda" {
   source      = "../../modules/backend/lambda-functions/health"
   environemnt = "prod"
 
 }
 
+# A lambda function get recipes from the dynamodb
 module "get_recipes_lambda" {
   source      = "../../modules/backend/lambda-functions/get-recipes"
   environemnt = "prod"
@@ -65,8 +72,16 @@ module "get_recipes_lambda" {
   dynamodb_table_arn = module.dynamoDB.dynamo_arn
 }
 
+# A lambda function to post recipes to the dynamodb
 module "post_recipes_lambda" {
   source = "../../modules/backend/lambda-functions/post-recipes"
+  environemnt = "prod"
+  dynamodb_table_arn = module.dynamoDB.dynamo_arn
+}
+
+# A lambda function to delete a recipe
+module "delete_recipe_lambda" {
+  source = "../../modules/backend/lambda-functions/delete-recipe"
   environemnt = "prod"
   dynamodb_table_arn = module.dynamoDB.dynamo_arn
 }

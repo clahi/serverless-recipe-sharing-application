@@ -10,7 +10,7 @@ data "aws_iam_policy_document" "lambda_assume_docuemnt" {
 }
 
 resource "aws_iam_role" "like_recipes_lambda_role" {
-  name = "delete-recipes-lambda-role"
+  name = "like-recipes-lambda-role"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_docuemnt.json
 }
 
@@ -21,18 +21,19 @@ resource "aws_iam_role_policy_attachment" "like_recipes_role_attachemnt" {
 }
 
 resource "aws_iam_policy" "like_recipe_in_dynamodb_policy" {
-  name = "post-to-dynamodb-policy"
+  name = "LambdaDynamoDBUpdateAccess"
   description = "Allows post access to DynamoDB table."
 
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
         {
-            Action = ["dynamodb:UpdateItem"]
+            Action = ["dynamodb:UpdateItem"],
+            Effect = "Allow",
+            Resource = var.dynamodb_table_arn
         }
-    ],
-    Effect = "Allow",
-    Resource = var.dynamodb_table_arn
+    ]
+    
   })
 }
 
@@ -53,7 +54,7 @@ resource "aws_lambda_function" "like_lambda_function" {
   role = aws_iam_role.like_recipes_lambda_role.arn
   handler = "like.lambda_handler"
   source_code_hash = data.archive_file.function_file.output_base64sha256
-  runtime = "3.9"
+  runtime = "python3.9"
   timeout = 60
 
 

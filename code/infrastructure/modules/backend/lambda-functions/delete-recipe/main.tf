@@ -21,18 +21,19 @@ resource "aws_iam_role_policy_attachment" "delete_recipes_role_attachemnt" {
 }
 
 resource "aws_iam_policy" "delete_from_dynamodb_policy" {
-  name = "post-to-dynamodb-policy"
-  description = "Allows post access to DynamoDB table."
+  name = "LambdaDynamoDBDeletAccess"
+  description = "Allows delete access to DynamoDB table."
 
   policy = jsonencode({
     Version = "2012-10-17",
     Statement = [
         {
-            Action = ["dynamodb:DeleteItem"]
+            Action = ["dynamodb:DeleteItem"],
+            Effect = "Allow",
+            Resource = var.dynamodb_table_arn
         }
     ],
-    Effect = "Allow",
-    Resource = var.dynamodb_table_arn
+    
   })
 }
 
@@ -53,7 +54,7 @@ resource "aws_lambda_function" "delete_lambda_function" {
   role = aws_iam_role.delete_recipes_lambda_role.arn
   handler = "delete.lambda_handler"
   source_code_hash = data.archive_file.function_file.output_base64sha256
-  runtime = "3.9"
+  runtime = "python3.9"
   timeout = 60
 
   # layers = [ "arn:aws:lambda:${var.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:68" ]

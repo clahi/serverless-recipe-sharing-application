@@ -39,19 +39,19 @@ module "http_api" {
   health_lambda_invocation_arn = module.health_lambda.lambda_health_invoke_arn
 
   # Get recipes lambda function
-  recipes_function_name          = module.recipes_lambda.function_name
-  recipes_lambda__invocation_arn = module.recipes_lambda.lambda_recipes_invoke_arn
+  recipes_function_name          = module.get_recipes_lambda.function_name
+  recipes_lambda__invocation_arn = module.get_recipes_lambda.lambda_recipes_invoke_arn
 
   # Post recipes lambda function
-  post_recipe_function_name = module.post_recipes_lambda.post_lambda_function_name
+  post_recipe_function_name           = module.post_recipes_lambda.post_lambda_function_name
   post_recipes_lambda__invocation_arn = module.post_recipes_lambda.lambda_post_recipes_invoke_arn
 
   # Lambda function for deleting recipe
-  delete_recipe_function_name = module.delete_recipe_lambda.delete_lambda_function_name
+  delete_recipe_function_name           = module.delete_recipe_lambda.delete_lambda_function_name
   delete_recipes_lambda__invocation_arn = module.delete_recipe_lambda.delete_lambda_recipes_invoke_arn
 
   # Lambda function for liking a recipe
-  like_recipe_function_name = module.like_recipe_lambda.like_lambda_function_name
+  like_recipe_function_name           = module.like_recipe_lambda.like_lambda_function_name
   like_recipes_lambda__invocation_arn = module.like_recipe_lambda.like_lambda_recipe_invoke_arn
 }
 
@@ -78,21 +78,21 @@ module "get_recipes_lambda" {
 
 # A lambda function to post recipes to the dynamodb
 module "post_recipes_lambda" {
-  source = "../../modules/backend/lambda-functions/post-recipes"
-  environemnt = "prod"
+  source             = "../../modules/backend/lambda-functions/post-recipes"
+  environemnt        = "prod"
   dynamodb_table_arn = module.dynamoDB.dynamo_arn
 }
 
 # A lambda function to delete a recipe
 module "delete_recipe_lambda" {
-  source = "../../modules/backend/lambda-functions/delete-recipe"
-  environemnt = "prod"
+  source             = "../../modules/backend/lambda-functions/delete-recipe"
+  environemnt        = "prod"
   dynamodb_table_arn = module.dynamoDB.dynamo_arn
 }
 
 # A lambda function to like a recipe
 module "like_recipe_lambda" {
-  source = "../../modules/backend/lambda-functions/like-recipe"
-  environemnt = "prod"
+  source             = "../../modules/backend/lambda-functions/like-recipe"
+  environemnt        = "prod"
   dynamodb_table_arn = module.dynamoDB.dynamo_arn
 }

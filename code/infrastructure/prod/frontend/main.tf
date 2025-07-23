@@ -19,6 +19,6 @@ module "s3" {
 }
 
 module "cloudFrontDistribution" {
-  source = "../../../modules/Frontend/cloudfront"
+  source = "../../modules/Frontend/cloudfront"
   aws_bucket_domain_name = module.s3.bucket_domain_name
 }

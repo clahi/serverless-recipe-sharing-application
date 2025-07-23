@@ -46,3 +46,10 @@ module "health_lambda" {
   source      = "../../modules/backend/lambda-functions/health"
   environemnt = "prod"
 }
+
+module "recipes_lambda" {
+  source = "../../modules/backend/lambda-functions/recipes"
+  environemnt = "prod"
+
+  dynamodb_table_arn = module.dynamoDB.dynamo_arn
+}
